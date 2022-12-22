@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import org.example.client.JPlaceholderClient;
-import org.example.data.Post;
+import org.example.Post;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

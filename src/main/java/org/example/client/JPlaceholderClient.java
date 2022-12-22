@@ -1,6 +1,6 @@
 package org.example.client;
 
-import org.example.data.Post;
+import org.example.Post;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

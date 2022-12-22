@@ -1,2 +1,10 @@
 server:
   port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/exampleServer
+    username: exampleUser
+    password: examplePassword
+  jpa:
+    open-in-view: false

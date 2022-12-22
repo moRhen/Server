@@ -13,7 +13,7 @@ public interface JPlaceholderClient {
   List<Post> getPosts();
 
   @GetMapping(value = "/posts/{postId}")
-  Post getPostById(@PathVariable("postId") int postId);
+  Post getPostById(@PathVariable("postId") long postId);
 
   @PostMapping(value = "/posts")
   void createPost(@RequestBody Post post);

@@ -11,7 +11,8 @@ public class Post {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  int id;
+  long id;
+  long postId;
   @Column(name = "user_id")
   int userId;
   String title;

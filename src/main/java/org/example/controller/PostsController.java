@@ -1,14 +1,14 @@
 package org.example.controller;
 
-import org.example.client.JPlaceholderClient;
 import org.example.PostDto;
+import org.example.client.JPlaceholderClient;
 import org.example.mapper.PostMapper;
 import org.example.repository.PostRepository;
+import org.example.service.PlaceholderPostService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/posts")
@@ -17,10 +17,12 @@ public class PostsController {
   final JPlaceholderClient posts;
   final PostRepository postRepository;
   final PostMapper postMapper;
+  final PlaceholderPostService placeholderPostService;
 
-  public PostsController(JPlaceholderClient posts, PostRepository postRepository) {
+  public PostsController(JPlaceholderClient posts, PostRepository postRepository, PlaceholderPostService placeholderPostService) {
     this.posts = posts;
     this.postRepository = postRepository;
+    this.placeholderPostService = placeholderPostService;
     this.postMapper = Mappers.getMapper(PostMapper.class);
   }
 
@@ -36,14 +38,9 @@ public class PostsController {
 
   @GetMapping(path = "/{postId}")
   PostDto getPostById(@PathVariable long postId) {
-    Optional<org.example.database.Post> dbPost = postRepository.findByPostId(postId);
-    if (dbPost.isPresent()) {
-      return postMapper.dbToPojo(dbPost.get());
-    }
-
-    PostDto post = posts.getPostById(postId);
-    postRepository.save(postMapper.pojoToDb(post));
-    return post;
+    return postRepository.findByPostId(postId)
+        .map(postMapper::dbToPojo)
+        .orElse(placeholderPostService.getAndSavePost(postId));
   }
 
   @DeleteMapping()

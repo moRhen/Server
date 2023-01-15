@@ -1,6 +1,6 @@
 package org.example.client;
 
-import org.example.Post;
+import org.example.PostDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,13 +10,13 @@ import java.util.List;
 public interface JPlaceholderClient {
 
   @GetMapping(value = "/posts")
-  List<Post> getPosts();
+  List<PostDto> getPosts();
 
   @GetMapping(value = "/posts/{postId}")
-  Post getPostById(@PathVariable("postId") long postId);
+  PostDto getPostById(@PathVariable("postId") long postId);
 
   @PostMapping(value = "/posts")
-  void createPost(@RequestBody Post post);
+  void createPost(@RequestBody PostDto post);
 
   @DeleteMapping(value = "/posts/1")
   void deletePost();

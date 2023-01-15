@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import org.example.client.JPlaceholderClient;
-import org.example.Post;
+import org.example.PostDto;
 import org.example.mapper.PostMapper;
 import org.example.repository.PostRepository;
 import org.mapstruct.factory.Mappers;
@@ -25,23 +25,23 @@ public class PostsController {
   }
 
   @PostMapping(path = "/")
-  void createPost(@RequestBody Post post) {
-    posts.createPost(post);
+  void createPost(@RequestBody PostDto postDto) {
+    posts.createPost(postDto);
   }
 
   @GetMapping(path = "/")
-  List<Post> getPosts() {
+  List<PostDto> getPosts() {
     return posts.getPosts();
   }
 
   @GetMapping(path = "/{postId}")
-  Post getPostById(@PathVariable long postId) {
+  PostDto getPostById(@PathVariable long postId) {
     Optional<org.example.database.Post> dbPost = postRepository.findByPostId(postId);
     if (dbPost.isPresent()) {
       return postMapper.dbToPojo(dbPost.get());
     }
 
-    Post post = posts.getPostById(postId);
+    PostDto post = posts.getPostById(postId);
     postRepository.save(postMapper.pojoToDb(post));
     return post;
   }

@@ -1,5 +1,6 @@
 package org.example.mapper;
 
+import org.example.PostDto;
 import org.example.database.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -8,7 +9,7 @@ import org.mapstruct.Mapping;
 public interface PostMapper {
 
   @Mapping(target = "id", source = "post.postId")
-  org.example.Post dbToPojo(Post post);
+  PostDto dbToPojo(Post post);
   @Mapping(target = "postId", source = "post.id")
-  Post pojoToDb(org.example.Post post);
+  Post pojoToDb(PostDto post);
 }

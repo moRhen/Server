@@ -29,12 +29,12 @@ public class PostsController {
     this.postMapper = Mappers.getMapper(PostMapper.class);
   }
 
-  @PostMapping(path = "/")
+  @PostMapping
   void createPost(@RequestBody PostDto postDto) {
     posts.createPost(postDto);
   }
 
-  @GetMapping(path = "/")
+  @GetMapping
   List<PostDto> getPosts() {
     return posts.getPosts();
   }
@@ -47,8 +47,8 @@ public class PostsController {
         .orElse(placeholderPostService.getAndSavePost(postId));
   }
 
-  @DeleteMapping()
-  void deletePost() {
-    posts.deletePost();
+  @DeleteMapping("/{postId}")
+  void deletePost(@PathVariable long postId) {
+    postRepository.deleteById(postId);
   }
 }

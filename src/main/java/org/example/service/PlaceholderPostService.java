@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.PostDto;
 import org.example.client.JPlaceholderClient;
+import org.example.exceptions.PostNotFoundException;
 import org.example.mapper.PostMapper;
 import org.example.repository.PostRepository;
 import org.mapstruct.factory.Mappers;
@@ -20,9 +21,13 @@ public class PlaceholderPostService {
     this.postMapper = Mappers.getMapper(PostMapper.class);
   }
 
-
-  public PostDto getAndSavePost(long postId) {
-    PostDto post = jPlaceholderClient.getPostById(postId);
+  public PostDto getAndSavePost(long postId) throws Exception {
+    PostDto post;
+    try {
+      post = jPlaceholderClient.getPostById(postId);
+    } catch (Exception e) {
+      throw new PostNotFoundException();
+    }
     postRepository.save(postMapper.pojoToDb(post));
     return post;
   }

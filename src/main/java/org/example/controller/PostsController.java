@@ -19,7 +19,10 @@ public class PostsController {
   final PostMapper postMapper;
   final PlaceholderPostService placeholderPostService;
 
-  public PostsController(JPlaceholderClient posts, PostRepository postRepository, PlaceholderPostService placeholderPostService) {
+  public PostsController(
+      JPlaceholderClient posts,
+      PostRepository postRepository,
+      PlaceholderPostService placeholderPostService) {
     this.posts = posts;
     this.postRepository = postRepository;
     this.placeholderPostService = placeholderPostService;
@@ -37,8 +40,9 @@ public class PostsController {
   }
 
   @GetMapping(path = "/{postId}")
-  PostDto getPostById(@PathVariable long postId) {
-    return postRepository.findByPostId(postId)
+  PostDto getPostById(@PathVariable long postId) throws Exception {
+    return postRepository
+        .findByPostId(postId)
         .map(postMapper::dbToPojo)
         .orElse(placeholderPostService.getAndSavePost(postId));
   }

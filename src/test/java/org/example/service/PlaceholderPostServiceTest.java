@@ -12,21 +12,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-
 @SpringBootTest
 class PlaceholderPostServiceTest {
 
   @InjectMocks PlaceholderPostService placeholderPostService;
-  @Mock
-  JPlaceholderClient jPlaceholderClient;
-  @Mock
-  private PostRepository postRepository;
-
-
-
+  @Mock JPlaceholderClient jPlaceholderClient;
+  @Mock private PostRepository postRepository;
 
   @Test
-  void whenPostRequestedById_thenPostReturn() {
+  void whenPostRequestedById_thenPostReturn() throws Exception {
     long postId = 1L;
     when(jPlaceholderClient.getPostById(postId)).thenReturn(new PostDto(postId, 1, null, null));
 

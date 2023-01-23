@@ -4,7 +4,7 @@ import org.example.PostDto;
 import org.example.client.JPlaceholderClient;
 import org.example.mapper.PostMapper;
 import org.example.repository.PostRepository;
-import org.example.service.PlaceholderPostService;
+import org.example.service.PostService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,21 +17,19 @@ public class PostsController {
   final JPlaceholderClient posts;
   final PostRepository postRepository;
   final PostMapper postMapper;
-  final PlaceholderPostService placeholderPostService;
+  final PostService postService;
 
   public PostsController(
-      JPlaceholderClient posts,
-      PostRepository postRepository,
-      PlaceholderPostService placeholderPostService) {
+      JPlaceholderClient posts, PostRepository postRepository, PostService postService) {
     this.posts = posts;
     this.postRepository = postRepository;
-    this.placeholderPostService = placeholderPostService;
+    this.postService = postService;
     this.postMapper = Mappers.getMapper(PostMapper.class);
   }
 
   @PostMapping
   void createPost(@RequestBody PostDto postDto) {
-    posts.createPost(postDto);
+    postRepository.save(postMapper.pojoToDb(postDto));
   }
 
   @GetMapping
@@ -41,10 +39,7 @@ public class PostsController {
 
   @GetMapping(path = "/{postId}")
   PostDto getPostById(@PathVariable long postId) throws Exception {
-    return postRepository
-        .findByPostId(postId)
-        .map(postMapper::dbToPojo)
-        .orElse(placeholderPostService.getAndSavePost(postId));
+    return postService.getPostById(postId);
   }
 
   @DeleteMapping("/{postId}")

@@ -19,7 +19,7 @@ public class PostService {
     this.postMapper = Mappers.getMapper(PostMapper.class);
   }
 
-  public PostDto getPostById(long postId) throws Exception {
+  public PostDto getPostById(long postId) {
     return postRepository
         .findByPostId(postId)
         .map(postMapper::dbToPojo)

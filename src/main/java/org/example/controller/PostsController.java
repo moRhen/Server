@@ -38,7 +38,7 @@ public class PostsController {
   }
 
   @GetMapping(path = "/{postId}")
-  PostDto getPostById(@PathVariable long postId) throws Exception {
+  PostDto getPostById(@PathVariable long postId) {
     return postService.getPostById(postId);
   }
 

@@ -20,7 +20,7 @@ class PlaceholderPostServiceTest {
   @Mock private PostRepository postRepository;
 
   @Test
-  void whenPostRequestedById_thenPostReturn() throws Exception {
+  void whenPostRequestedById_thenPostReturn() {
     long postId = 1L;
     when(jPlaceholderClient.getPostById(postId)).thenReturn(new PostDto(postId, 1, null, null));
 

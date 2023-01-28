@@ -21,7 +21,7 @@ public class PlaceholderPostService {
     this.postMapper = Mappers.getMapper(PostMapper.class);
   }
 
-  public PostDto getAndSavePost(long postId) throws Exception {
+  public PostDto getAndSavePost(long postId) {
     PostDto post;
     try {
       post = jPlaceholderClient.getPostById(postId);

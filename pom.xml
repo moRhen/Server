@@ -108,6 +108,11 @@
             <artifactId>mapstruct</artifactId>
             <version>1.5.3.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-server</artifactId>
+            <version>2.28.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.example</groupId>

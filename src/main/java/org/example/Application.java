@@ -6,12 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
@@ -21,7 +19,6 @@ import org.springframework.jms.support.converter.MessageType;
 @EnableJms
 public class Application {
 
-  private static ConfigurableApplicationContext context;
 
   @Bean
   public JmsListenerContainerFactory<?> defaultJmsFactory(@Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory,
@@ -40,10 +37,6 @@ public class Application {
   }
 
   public static void main(String[] args) {
-    context = SpringApplication.run(Application.class, args);
-  }
-
-  public static JmsTemplate getJmsTemplate() {
-    return context.getBean(JmsTemplate.class);
+    SpringApplication.run(Application.class, args);
   }
 }

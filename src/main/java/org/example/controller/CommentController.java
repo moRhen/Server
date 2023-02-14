@@ -7,15 +7,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.example.Application.getJmsTemplate;
 
 @RestController
 @RequestMapping(path = "/comments")
 public class CommentController {
 
-    @PostMapping(path = "/postId")
+    final
+    JmsTemplate jmsTemplate;
+
+    public CommentController(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
+
+    @PostMapping(path = "/{postId}")
     void createCommentForPost(@PathVariable long postId) throws Exception{
-        JmsTemplate jmsTemplate = getJmsTemplate();
         jmsTemplate.convertAndSend("comments", new CommentDto("some comment that i sent"));
     }
 }

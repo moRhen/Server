@@ -17,4 +17,5 @@ public class Post {
   int userId;
   String title;
   String body;
+  String comment;
 }

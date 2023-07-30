@@ -6,6 +6,7 @@ import org.example.mapper.PostMapper;
 import org.example.repository.PostRepository;
 import org.example.service.PostService;
 import org.mapstruct.factory.Mappers;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,7 +44,8 @@ public class PostsController {
   }
 
   @DeleteMapping("/{postId}")
-  void deletePost(@PathVariable long postId) {
-    postRepository.deleteById(postId);
+  @Transactional
+  public void deletePost(@PathVariable long postId) {
+    postRepository.deleteByPostId(postId);
   }
 }

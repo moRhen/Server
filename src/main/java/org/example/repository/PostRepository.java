@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
   Optional<Post> findByPostId(long postId);
+
+  long deleteByPostId(long postId);
 }

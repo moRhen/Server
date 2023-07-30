@@ -7,8 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommentReceiver {
 
+    private final PostService postService;
+
+    public CommentReceiver(PostService postService) {
+        this.postService = postService;
+    }
+
     @JmsListener(destination = "comments", containerFactory = "defaultJmsFactory")
     public void receiveComment(CommentDto comment) {
-    System.out.printf("Comment: %s", comment.getComment());
+        postService.addComment(comment);
     }
 }

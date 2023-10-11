@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import java.util.List;
 import org.example.PostDto;
 import org.example.client.JPlaceholderClient;
 import org.example.mapper.PostMapper;
@@ -8,8 +9,6 @@ import org.example.service.PostService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/posts")
@@ -38,7 +37,7 @@ public class PostsController {
     return posts.getPosts();
   }
 
-  @GetMapping(path = "/{postId}")
+  @GetMapping("/{postId}")
   PostDto getPostById(@PathVariable long postId) {
     return postService.getPostById(postId);
   }

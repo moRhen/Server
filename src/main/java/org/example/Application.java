@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.kafka.core.KafkaOperations;
 import org.springframework.kafka.listener.CommonErrorHandler;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
@@ -14,6 +15,7 @@ import org.springframework.util.backoff.FixedBackOff;
 
 @SpringBootApplication
 @EnableFeignClients
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 public class Application {
 
   @Bean

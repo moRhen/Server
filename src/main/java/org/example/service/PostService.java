@@ -29,12 +29,6 @@ public class PostService {
       return postMapper.dbToPojo(post.get());
     }
     return placeholderPostService.getAndSavePost(postId);
-
-//    orElse triggered even if post exist
-//    return postRepository
-//        .findByPostId(postId)
-//        .map(postMapper::dbToPojo)
-//            .orElse(placeholderPostService.getAndSavePost(postId));
   }
 
   public void addComment (CommentDto commentDto) {

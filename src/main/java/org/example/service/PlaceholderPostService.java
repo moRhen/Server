@@ -4,22 +4,17 @@ import org.example.PostDto;
 import org.example.client.JPlaceholderClient;
 import org.example.database.Post;
 import org.example.exceptions.PostNotFoundException;
-import org.example.mapper.PostMapper;
-import org.example.repository.PostRepository;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PlaceholderPostService {
 
   private final JPlaceholderClient jPlaceholderClient;
-  private final PostRepository postRepository;
-  private final PostMapper postMapper;
+  private final PostService postService;
 
-  public PlaceholderPostService(JPlaceholderClient jPlaceholderClient, PostRepository postRepository) {
+  public PlaceholderPostService(JPlaceholderClient jPlaceholderClient, PostService postService) {
     this.jPlaceholderClient = jPlaceholderClient;
-    this.postRepository = postRepository;
-    this.postMapper = Mappers.getMapper(PostMapper.class);
+    this.postService = postService;
   }
 
   public PostDto getAndSavePost(long postId) {
@@ -29,7 +24,7 @@ public class PlaceholderPostService {
     } catch (Exception e) {
       throw new PostNotFoundException();
     }
-    Post post = postRepository.save(postMapper.pojoToDb(postDto));
+    Post post = postService.createPost(postDto);
     postDto.setRecordId(post.getId());
     return postDto;
   }

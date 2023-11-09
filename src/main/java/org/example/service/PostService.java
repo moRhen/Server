@@ -37,4 +37,12 @@ public class PostService {
     Post postToSave = postMapper.pojoToDb(postDto);
     postRepository.save(postToSave);
   }
+
+  public Post createPost(PostDto postDto) {
+    return postRepository.save(postMapper.pojoToDb(postDto));
+  }
+
+  public void deletePost(long postId) {
+    postRepository.deleteByPostId(postId);
+  }
 }

@@ -1,12 +1,10 @@
 package org.example.controller;
 
 import java.util.List;
-
 import org.example.CommentDto;
 import org.example.PostDto;
 import org.example.client.JPlaceholderClient;
 import org.example.mapper.PostMapper;
-import org.example.repository.PostRepository;
 import org.example.service.PostService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,16 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class PostsController {
 
   final JPlaceholderClient posts;
-  final PostRepository postRepository;
   final PostMapper postMapper;
   final PostService postService;
 
   final KafkaTemplate<Object, Object> template;
 
   public PostsController(
-          JPlaceholderClient posts, PostRepository postRepository, PostService postService, KafkaTemplate<Object, Object> template) {
+          JPlaceholderClient posts, PostService postService, KafkaTemplate<Object, Object> template) {
     this.posts = posts;
-    this.postRepository = postRepository;
     this.postService = postService;
     this.template = template;
     this.postMapper = Mappers.getMapper(PostMapper.class);
@@ -35,7 +31,7 @@ public class PostsController {
 
   @PostMapping
   void createPost(@RequestBody PostDto postDto) {
-    postRepository.save(postMapper.pojoToDb(postDto));
+    postService.createPost(postDto);
   }
 
   @PostMapping("/{postId}/comments")
@@ -57,6 +53,6 @@ public class PostsController {
   @DeleteMapping("/{postId}")
   @Transactional
   public void deletePost(@PathVariable long postId) {
-    postRepository.deleteByPostId(postId);
+    postService.deletePost(postId);
   }
 }

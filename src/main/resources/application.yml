@@ -8,3 +8,8 @@ spring:
 
 kafka:
   server-address: localhost:29092
+
+validation:
+  comment:
+    length: 2
+    forbidden-phrases: ab,bc,cd

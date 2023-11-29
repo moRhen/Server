@@ -19,6 +19,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ex, "Post not found in db, and external service", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
   }
 
+  @ExceptionHandler(value = {ValidationException.class})
+  protected ResponseEntity<Object> handleException(ValidationException ex) {
+    log.error("Invalid request {}", ex.getMessage());
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler(value = RuntimeException.class)
   protected void handleException(RuntimeException exception) {
     log.error("Runtime", exception);

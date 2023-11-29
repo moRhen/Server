@@ -13,3 +13,6 @@ validation:
   comment:
     length: 2
     forbidden-phrases: ab,bc,cd
+
+posts:
+  allow-deletion: true

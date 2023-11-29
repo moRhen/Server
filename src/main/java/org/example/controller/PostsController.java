@@ -1,6 +1,8 @@
 package org.example.controller;
 
 import java.util.List;
+
+import org.aspectj.lang.annotation.AfterReturning;
 import org.example.CommentDto;
 import org.example.PostDto;
 import org.example.chain.ChainValidation;
@@ -13,6 +15,8 @@ import org.example.service.HistoryService;
 import org.example.service.PostService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +36,8 @@ public class PostsController {
   private int maxCommentLength;
   @Value(("${validation.comment.forbidden-phrases}"))
   private List<String> forbiddenPhrases;
+  @Value("${post.allow-deletion}")
+  private boolean deleteAvailable;
 
   public PostsController(
           JPlaceholderClient posts, PostService postService, HistoryService historyService, KafkaTemplate<Object, Object> template) {
@@ -71,8 +77,13 @@ public class PostsController {
 
   @DeleteMapping("/{postId}")
   @Transactional
-  public void deletePost(@PathVariable long postId) {
-    postService.deletePost(postId);
+  public ResponseEntity<Object> deletePost(@PathVariable long postId) {
+    if (deleteAvailable) {
+      postService.deletePost(postId);
+      return new ResponseEntity<>(String.format("Post: %s deleted", postId), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>("Post deletion is disabled", HttpStatus.LOCKED);
+    }
   }
 
   @PutMapping("/{postId}/undo")

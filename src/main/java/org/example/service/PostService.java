@@ -16,10 +16,12 @@ public class PostService {
   final PostRepository postRepository;
   final PostMapper postMapper;
   final PlaceholderPostService placeholderPostService;
+  final HistoryService historyService;
 
-  public PostService(PostRepository postRepository, PlaceholderPostService placeholderPostService) {
+  public PostService(PostRepository postRepository, PlaceholderPostService placeholderPostService, HistoryService historyService) {
     this.postRepository = postRepository;
     this.placeholderPostService = placeholderPostService;
+    this.historyService = historyService;
     this.postMapper = Mappers.getMapper(PostMapper.class);
   }
 
@@ -28,18 +30,22 @@ public class PostService {
     if (post.isPresent()) {
       return postMapper.dbToPojo(post.get());
     }
-    return placeholderPostService.getAndSavePost(postId);
+    PostDto postDto = placeholderPostService.getPost(postId);
+    Post postSaved = savePost(postDto);
+    postDto.setRecordId(postSaved.getId());
+    return postDto;
   }
 
   public void addComment (CommentDto commentDto) {
     PostDto postDto = getPostById(commentDto.getPostId());
     postDto.setComment(commentDto.getComment());
-    Post postToSave = postMapper.pojoToDb(postDto);
-    postRepository.save(postToSave);
+    savePost(postDto);
   }
 
-  public Post createPost(PostDto postDto) {
-    return postRepository.save(postMapper.pojoToDb(postDto));
+  public Post savePost(PostDto postDto) {
+    Post post =  postRepository.save(postMapper.pojoToDb(postDto));
+    historyService.addPostToHistory(postMapper.dbToPojo(post));
+    return post;
   }
 
   public void deletePost(long postId) {

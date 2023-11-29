@@ -5,6 +5,7 @@ import org.example.CommentDto;
 import org.example.PostDto;
 import org.example.client.JPlaceholderClient;
 import org.example.mapper.PostMapper;
+import org.example.service.HistoryService;
 import org.example.service.PostService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,20 +19,22 @@ public class PostsController {
   final JPlaceholderClient posts;
   final PostMapper postMapper;
   final PostService postService;
+  final HistoryService historyService;
 
   final KafkaTemplate<Object, Object> template;
 
   public PostsController(
-          JPlaceholderClient posts, PostService postService, KafkaTemplate<Object, Object> template) {
+          JPlaceholderClient posts, PostService postService, HistoryService historyService, KafkaTemplate<Object, Object> template) {
     this.posts = posts;
     this.postService = postService;
+    this.historyService = historyService;
     this.template = template;
     this.postMapper = Mappers.getMapper(PostMapper.class);
   }
 
   @PostMapping
   void createPost(@RequestBody PostDto postDto) {
-    postService.createPost(postDto);
+    postService.savePost(postDto);
   }
 
   @PostMapping("/{postId}/comments")
@@ -54,5 +57,10 @@ public class PostsController {
   @Transactional
   public void deletePost(@PathVariable long postId) {
     postService.deletePost(postId);
+  }
+
+  @PutMapping("/{postId}/undo")
+  public void undoPostById(@PathVariable long postId) {
+    historyService.undoPostForId(postId);
   }
 }

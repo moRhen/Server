@@ -22,9 +22,9 @@ class PlaceholderPostServiceTest {
   @Test
   void whenPostRequestedById_thenPostReturn() {
     long postId = 1L;
-    when(jPlaceholderClient.getPostById(postId)).thenReturn(new PostDto(postId, 1, null, null));
+    when(jPlaceholderClient.getPostById(postId)).thenReturn(new PostDto(postId, 1, null, null, null, 1));
 
-    PostDto post = placeholderPostService.getAndSavePost(postId);
+    PostDto post = placeholderPostService.getPost(postId);
     assertNotNull(post);
     assertEquals(postId, post.getId());
   }
